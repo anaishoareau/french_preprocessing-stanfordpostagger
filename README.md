@@ -10,7 +10,7 @@ Vérifier que la commande pip est installée, ainsi que git : https://packaging.
 #### Pour installer le package french_preprocessing, executer la commande :
 
 ```bash 
-pip install git+https://github.com/anaishoareau/french_preprocessing.git
+pip install git+https://github.com/anaishoareau/french_preprocessing-stanfordpostagger.git
 ```
 
 #### ATTENTION : Cette commande installe aussi les dépendances (le package python nltk). Si vous rencontrez des problèmes, il faut l'installer à part.
