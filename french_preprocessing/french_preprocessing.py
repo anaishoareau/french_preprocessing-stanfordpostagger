@@ -55,15 +55,15 @@ class FrenchPreprocessing(object):
         string = tel.sub(r'\g<sep1>.\g<sep2>.\g<sep3>.\g<sep4>.\g<sep5>',string)
         
         # Tokenisation 
-        # Le tokenizer supprime automatiquement les caractères suivant : `^ ° ¤ ¨
+        # Le tokenizer supprime automatiquement les caractères suivant isolés : `^ ° ¤ ¨
         # Reconnait comme token :
         # - Email
         # - Site web, nom de domaine, utilisateur etc
         # - Numéro de téléphone réduit
         # - Nom composé
         # - Mot courant
-        # - Ponctuation
-        tokenizer = RegexpTokenizer(r'''(\w{2,}'\w+|\w'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
+        # - Ponctuation |'\w{2,}'\w+
+        tokenizer = RegexpTokenizer(r'''([Aa]ujourd'hui|\w+'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
         tokens = tokenizer.tokenize(string)
         return tokens
     
@@ -112,7 +112,8 @@ class FrenchPreprocessing(object):
     # La fonction lemmatise :
     # - prend en argument une liste de tuples du type (mot de la liste, son tag)
     # - renvoie une liste qui contient les mots de la phrase lemmatisés (strings)
-    def lemmatize(self, reduced_list_word_tag):
+    def lemmatize(self, reduced_list_word_tag, format_output = 'list'):
+        
         list_lemmatized = []
         
         for e in reduced_list_word_tag:
@@ -128,8 +129,13 @@ class FrenchPreprocessing(object):
                     list_lemmatized.append(word)
             else:
                 list_lemmatized.append(word)
-                
-        return " ".join(list_lemmatized)
+        
+        if format_output == 'string':
+            output = " ".join(list_lemmatized)
+        else:
+            output = list_lemmatized
+            
+        return output
     
     # Méthode qui réalise le préprocessing d'un texte en français 
     # Prend une string et retourne une string qui a subit 
@@ -140,5 +146,5 @@ class FrenchPreprocessing(object):
         reduced_list_word_tag = self.delete_stopwords(list_word_tag)
         reduced_list_word_tag = self.delete_symbols(reduced_list_word_tag)
         reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
-        lematized_string = self.lemmatize(reduced_list_word_tag)
+        lematized_string = self.lemmatize(reduced_list_word_tag, format_output = 'string')
         return lematized_string
