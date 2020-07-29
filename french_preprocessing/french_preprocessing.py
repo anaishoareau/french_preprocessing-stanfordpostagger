@@ -62,7 +62,7 @@ class FrenchPreprocessing(object):
         # - Numéro de téléphone réduit
         # - Nom composé
         # - Mot courant
-        # - Ponctuation |'\w{2,}'\w+
+        # - Ponctuation
         tokenizer = RegexpTokenizer(r'''([Aa]ujourd'hui|\w+'|[a-zA-ZÀ-Ÿà-ÿ0-9_\.\-]+@[a-zA-ZÀ-Ÿà-ÿ0-9\-\.]+\.[a-zA-ZÀ-Ÿà-ÿ0-9]+|[a-zA-ZÀ-Ÿà-ÿ0-9:@%/;$~_?\+\-=\\\.&\|£€]+[a-zA-ZÀ-Ÿà-ÿ0-9#@%/$~_?\+\-=\\&\|£€]+|[\wÀ-Ÿà-ÿ]+[/\-][\wÀ-Ÿà-ÿ]+|[\wÀ-Ÿà-ÿ0-9]+|\.\.\.|[\(\)\[\]\{\}\"\'\.,;\:\?!\-\_\*\#\§=+<>/\\])''')
         tokens = tokenizer.tokenize(string)
         return tokens
@@ -109,6 +109,15 @@ class FrenchPreprocessing(object):
                 reduced_list_word_tag.append((e[0], e[1]))
         return reduced_list_word_tag
     
+    # Suppression des stop_words, symboles et ponctuation
+    def simplify(self, list_word_tag):
+        reduced_list_word_tag = []
+        for i in range(len(list_word_tag)):
+            e = list_word_tag[i][0]
+            if e not in self.stopwords and e not in self.symbols and e not in self.punct:
+                reduced_list_word_tag.append((e, list_word_tag[i][1]))
+        return reduced_list_word_tag
+    
     # La fonction lemmatise :
     # - prend en argument une liste de tuples du type (mot de la liste, son tag)
     # - renvoie une liste qui contient les mots de la phrase lemmatisés (strings)
@@ -143,8 +152,9 @@ class FrenchPreprocessing(object):
     def preprocessing(self, string):
         tokenized_list_of_string = self.tokenize(string)
         list_word_tag = self.tag(tokenized_list_of_string)
-        reduced_list_word_tag = self.delete_stopwords(list_word_tag)
-        reduced_list_word_tag = self.delete_symbols(reduced_list_word_tag)
-        reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
+        # reduced_list_word_tag = self.delete_stopwords(list_word_tag)
+        # reduced_list_word_tag = self.delete_symbols(reduced_list_word_tag)
+        # reduced_list_word_tag = self.delete_punct(reduced_list_word_tag)
+        reduced_list_word_tag = self.simplify(list_word_tag)
         lematized_string = self.lemmatize(reduced_list_word_tag, format_output = 'string')
         return lematized_string
