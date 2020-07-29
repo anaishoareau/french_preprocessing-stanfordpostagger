@@ -16,12 +16,12 @@ verification de l'installation du package
 
 from setuptools import setup, find_packages
 
-setup(name='french_preprocessing',
+setup(name='french_preprocessing-stanfordpostagger',
       version='0.0.3',
       description='French preprocessing project with tools for tokenisation, simplification, grammatical tagging (Part-of-Speech tagging) and lemmatization',
       author='Anaïs HOAREAU',
       packages=find_packages(),
-      package_data={'french_preprocessing': ['data/lexique.txt',
+      package_data={'french_preprocessing_stanfordpostagger': ['data/lexique.txt',
                                              'stanford-postagger-full-2018-10-16/build.xml',
                                              'stanford-postagger-full-2018-10-16/LICENSE.txt',
                                              'stanford-postagger-full-2018-10-16/README.txt',
