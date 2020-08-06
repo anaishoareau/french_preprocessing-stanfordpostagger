@@ -200,7 +200,7 @@ Exemple :
 ```python
 string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string))))
+fp.delete_symbols(fp.tag(fp.tokenize(string)))
 
 >>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('.', 'ponct'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('!', 'ponct'), ('un', 'det'), ('jour', 'det'), (',', 'ponct'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), (',', 'ponct'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), ('...', 'ponct'), ('chats', 'nc'), ('révolution', 'nc')]
 ```
@@ -214,9 +214,23 @@ Exemple :
 ```python
 string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.delete_punct(fp.delete_stop_words(fp.tag(fp.tokenize(string))))
+fp.delete_punct(fp.tag(fp.tokenize(string)))
 
 >>> [("j'", 'cl'), ('aime', 'v'), ('les', 'det'), ('chats', 'nc'), ('ce', 'cl'), ('sont', 'v'), ('vraiment', 'adv'), ('des', 'det'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('(', 'det'), ('un', 'det'), ('jour', 'det'), ("j'", 'cl'), ('en', 'cl'), ('suis', 'v'), ('certaine', 'adj'), ('ils', 'cl'), ('contrôleront', 'v'), ('le', 'det'), ('monde', 'nc'), (')', 'det'), ('#', 'det'), ('chats', 'nc'), ('#', 'det'), ('révolution', 'nc')]
+```
+
+##### - fp.simplify(list_word_tag)
+
+Prend une liste de tuples de string en entrée du type : [(token1, tag1), (token2, tag2)], supprime les stopwords, les symboles et la ponctuation. Cette méthode est un condensé des trois méthodes précédentes.
+
+Exemple :
+
+```python
+string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
+
+fp.simplify(fp.tag(fp.tokenize(string)))
+
+>>> [("j'", 'cl'), ('aime', 'v'), ('chats', 'nc'), ('vraiment', 'adv'), ('êtres', 'nc'), ('supérieurs', 'adj'), ('jour', 'det'), ("j'", 'cl'), ('certaine', 'adj'), ('ils', 'cl'), ('contrôleront', 'v'), ('monde', 'nc'), ('chats', 'nc'), ('révolution', 'nc')]
 ```
 
 ##### - fp.lemmatize(list_word_tag)
@@ -229,7 +243,7 @@ Exemple :
 ```python
 string = "J'aime les chats. Ce sont vraiment des êtres supérieurs ! (Un jour, j'en suis certaine, ils contrôleront le monde...) #chats #révolution"
 
-fp.lemmatize(fp.delete_punct(fp.delete_symbols(fp.delete_stopwords(fp.tag(fp.tokenize(string))))))
+fp.lemmatize(fp.simplify(fp.tag(fp.tokenize(string))))))
 
 >>> je aimer chat vraiment être supérieur jour je certain il contrôler monde chat révolution
 ```
