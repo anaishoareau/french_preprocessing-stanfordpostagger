@@ -1,4 +1,8 @@
-# FRENCH PREPROCESSING
+# FrenchPreprocessing
+
+#### ANCIENNE VERSION DU FRENCHPREPROCESSING avec utilisation du StanfordPOSTagger pour le tagging. 
+
+#### Nouvelle version disponible ici : https://github.com/anaishoareau/french_preprocessing
 
 Package regroupant des outils de pré-traitement pour les textes en langue française : 
 tokenisation, simplification, tagging (Part-of-Speech tagging) et lemmatisation.
